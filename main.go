@@ -154,26 +154,24 @@ func main() {
 	a.Subscribe(window.OnWindowSize, onResize)
 	onResize("", nil)
 
-	// Create a blue globe, add it to the scene
+	// Create a globe, add it to the scene
 	geom := NewGlobe(1, 1)
 	mat := material.NewStandard(math32.NewColor("DarkBlue"))
 	mesh := graphic.NewMesh(geom, mat)
 	scene.Add(mesh)
 
-	// Add a button to change color, for no particular reason
-	isBlue := true
-	btn := gui.NewButton("Make Red")
+	// Add a button to show wireframe or not
+	isSolid := true
+	btn := gui.NewButton("show wireframe")
 	btn.SetPosition(100, 40)
 	btn.SetSize(40, 40)
 	btn.Subscribe(gui.OnClick, func(name string, ev interface{}) {
-		if isBlue {
-			mat.SetColor(math32.NewColor("DarkRed"))
-			isBlue = false
-			btn.Label.SetText("Make Blue")
+		mat.SetWireframe(isSolid)
+		isSolid = !isSolid
+		if isSolid {
+			btn.Label.SetText("show wireframe")
 		} else {
-			mat.SetColor(math32.NewColor("DarkBlue"))
-			isBlue = true
-			btn.Label.SetText("Make Red")
+			btn.Label.SetText("show solid")
 		}
 	})
 	scene.Add(btn)
