@@ -130,12 +130,21 @@ func main() {
 	mesh := graphic.NewMesh(geom, mat)
 	scene.Add(mesh)
 
-	// Create and add a button to the scene
+	// Add a button to change color, for no particular reason
+	isBlue := true
 	btn := gui.NewButton("Make Red")
 	btn.SetPosition(100, 40)
 	btn.SetSize(40, 40)
 	btn.Subscribe(gui.OnClick, func(name string, ev interface{}) {
-		mat.SetColor(math32.NewColor("DarkRed"))
+		if isBlue {
+			mat.SetColor(math32.NewColor("DarkRed"))
+			isBlue = false
+			btn.Label.SetText("Make Blue")
+		} else {
+			mat.SetColor(math32.NewColor("DarkBlue"))
+			isBlue = true
+			btn.Label.SetText("Make Red")
+		}
 	})
 	scene.Add(btn)
 
