@@ -64,18 +64,25 @@ func NewGlobe(radius float32, size int) *geometry.Geometry {
 	sqsq5div2 := float32(math.Sqrt((1.0 + sq5inv_64) / 2.0))
 	negmin1sq5div2 := float32((-1.0 - sq5inv_64) / 2.0)
 	negsqsq5div2 := float32(math.Sqrt((1.0 - sq5inv_64) / 2.0))
-	positions.AppendVector3(&math32.Vector3{1.0, 0.0, 0.0})                           // 0
-	positions.AppendVector3(&math32.Vector3{sq5inv, sq5inv2, 0.0})                    // 1
-	positions.AppendVector3(&math32.Vector3{sq5inv, min1sq5div2, sqsq5div2})          // 2
-	positions.AppendVector3(&math32.Vector3{sq5inv, negmin1sq5div2, negsqsq5div2})    // 3
-	positions.AppendVector3(&math32.Vector3{sq5inv, negmin1sq5div2, -negsqsq5div2})   // 4
-	positions.AppendVector3(&math32.Vector3{sq5inv, min1sq5div2, -sqsq5div2})         // 5
-	positions.AppendVector3(&math32.Vector3{-sq5inv, -negmin1sq5div2, -negsqsq5div2}) // 6
-	positions.AppendVector3(&math32.Vector3{-sq5inv, -min1sq5div2, -sqsq5div2})       // 7
-	positions.AppendVector3(&math32.Vector3{-sq5inv, -sq5inv2, 0.0})                  // 8
-	positions.AppendVector3(&math32.Vector3{-sq5inv, -min1sq5div2, sqsq5div2})        // 9
-	positions.AppendVector3(&math32.Vector3{-sq5inv, -negmin1sq5div2, negsqsq5div2})  // 10
-	positions.AppendVector3(&math32.Vector3{-1.0, 0.0, 0.0})                          // 11
+
+	var OnePos = func(x, y, z float32) *math32.Vector3 {
+		v := math32.Vector3{X: x, Y: y, Z: z}
+		v.MultiplyScalar(radius)
+		return &v
+	}
+
+	positions.AppendVector3(OnePos(1.0, 0.0, 0.0))                           // 0
+	positions.AppendVector3(OnePos(sq5inv, sq5inv2, 0.0))                    // 1
+	positions.AppendVector3(OnePos(sq5inv, min1sq5div2, sqsq5div2))          // 2
+	positions.AppendVector3(OnePos(sq5inv, negmin1sq5div2, negsqsq5div2))    // 3
+	positions.AppendVector3(OnePos(sq5inv, negmin1sq5div2, -negsqsq5div2))   // 4
+	positions.AppendVector3(OnePos(sq5inv, min1sq5div2, -sqsq5div2))         // 5
+	positions.AppendVector3(OnePos(-sq5inv, -negmin1sq5div2, -negsqsq5div2)) // 6
+	positions.AppendVector3(OnePos(-sq5inv, -min1sq5div2, -sqsq5div2))       // 7
+	positions.AppendVector3(OnePos(-sq5inv, -sq5inv2, 0.0))                  // 8
+	positions.AppendVector3(OnePos(-sq5inv, -min1sq5div2, sqsq5div2))        // 9
+	positions.AppendVector3(OnePos(-sq5inv, -negmin1sq5div2, negsqsq5div2))  // 10
+	positions.AppendVector3(OnePos(-1.0, 0.0, 0.0))                          // 11
 
 	for i := 0; i < 12; i++ {
 		fmt.Println(i, ": ", positions[i*3:i*3+3])
