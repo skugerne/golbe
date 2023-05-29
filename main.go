@@ -20,12 +20,35 @@ import (
 	"github.com/g3n/engine/window"
 )
 
+// from stackoverflow, because Math.Pow only works on floats (which is annoying)
+func IntPow(base, exp int) int {
+	result := 1
+	for {
+		if exp&1 == 1 {
+			result *= base
+		}
+		exp >>= 1
+		if exp == 0 {
+			break
+		}
+		base *= base
+	}
+
+	return result
+}
+
 func NewGlobe(radius float32, size int) *geometry.Geometry {
 
 	t := geometry.NewGeometry()
 
-	// Create buffers
+	// 1 => 12, 2 => 12+20, 3 => 12+20+60, 4 => 12+20+60+180
 	vertexCount := 12
+	for i := 1; i < size; i++ {
+		vertexCount += 20 * IntPow(3, i-1)
+	}
+	fmt.Printf("Will generate %d vertices.\n", vertexCount)
+
+	// Create buffers
 	positions := math32.NewArrayF32(0, vertexCount*3)
 	normals := math32.NewArrayF32(vertexCount*3, vertexCount*3)
 	uvs := math32.NewArrayF32(vertexCount*2, vertexCount*2)
